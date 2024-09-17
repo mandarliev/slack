@@ -17,7 +17,7 @@ interface EmojiPopoverProps {
   children: React.ReactNode;
   hint?: string;
   onEmojiSelect: (value: string) => void;
-}
+};
 
 export const EmojiPopover = ({
   children,
@@ -45,7 +45,9 @@ export const EmojiPopover = ({
           delayDuration={50}
         >
           <PopoverTrigger asChild>
-            <TooltipTrigger asChild>{children}</TooltipTrigger>
+            <TooltipTrigger asChild>
+              {children}
+            </TooltipTrigger>
           </PopoverTrigger>
           <TooltipContent className="bg-black text-white border border-white/5">
             <p className="font-medium text-xs">{hint}</p>
