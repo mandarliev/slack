@@ -14,8 +14,8 @@ import { useToggleReaction } from "@/features/reactions/api/use-toggle-reaction"
 import Reactions from "./reactions";
 import { usePanel } from "@/hooks/use-panel";
 
-const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
 const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
+const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
 
 interface MessageProps {
   id: Id<"messages">;
@@ -29,7 +29,7 @@ interface MessageProps {
       memberIds: Id<"members">[];
     }
   >;
-  body: Doc<"messages">["body"];
+  body: string;
   image: string | null | undefined;
   createdAt: Doc<"messages">["_creationTime"];
   updatedAt: Doc<"messages">["updatedAt"];
@@ -39,6 +39,7 @@ interface MessageProps {
   hideThreadButton?: boolean;
   threadCount?: number;
   threadImage?: string;
+  threadName?: string;
   threadTimestamp?: number;
 }
 
