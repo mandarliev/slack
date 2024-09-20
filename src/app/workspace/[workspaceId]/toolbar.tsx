@@ -1,7 +1,13 @@
-import { Button } from "@/components/ui/button";
-import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace";
-import useWorkspaceId from "@/hooks/use-workspace-id";
+import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Info, Search } from "lucide-react";
+
+import { useGetMembers } from "@/features/members/api/use-get-members";
+import { useGetChannels } from "@/features/channels/api/use-get-channels";
+import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace";
+
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandDialog,
@@ -13,30 +19,33 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command";
-import { useState } from "react";
-import { useGetChannels } from "@/features/channels/api/use-get-channels";
-import { useGetMembers } from "@/features/members/api/use-get-members";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import useWorkspaceId from "@/hooks/use-workspace-id";
 
-const Toolbar = () => {
-  const router = useRouter();
-  const [open, setOpen] = useState(false);
-  const onChannelClick = (channelId: string) => {
-    setOpen(false);
-    router.push(`/workspace/${workspaceId}/channel/${channelId}`);
-  };
-  const onMemberClick = (memberId: string) => {
-    setOpen(false);
-    router.push(`/workspace/${workspaceId}/member/${memberId}`);
-  };
+export const Toolbar = () => {
   const workspaceId = useWorkspaceId();
+  const router = useRouter();
+
   const { data } = useGetWorkspace({ id: workspaceId });
   const { data: channels } = useGetChannels({ workspaceId });
   const { data: members } = useGetMembers({ workspaceId });
+
+  const [open, setOpen] = useState(false);
+
+  const onChannelClick = (channelId: string) => {
+    setOpen(false);
+
+    router.push(`/workspace/${workspaceId}/channel/${channelId}`);
+  };
+
+  const onMemberClick = (memberId: string) => {
+    setOpen(false);
+
+    router.push(`/workspace/${workspaceId}/member/${memberId}`);
+  };
+
   return (
     <nav className="bg-[#481349] flex items-center justify-between h-10 p-1.5">
-      <div className="flex-1"></div>
+      <div className="flex-1" />
       <div className="min-w-[280px] max-[642px] grow-[2] shrink">
         <Button
           onClick={() => setOpen(true)}
@@ -52,7 +61,10 @@ const Toolbar = () => {
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup heading="Channels">
               {channels?.map((channel) => (
-                <CommandItem onSelect={() => onChannelClick(channel._id)}>
+                <CommandItem
+                  key={channel._id}
+                  onSelect={() => onChannelClick(channel._id)}
+                >
                   {channel.name}
                 </CommandItem>
               ))}
@@ -60,7 +72,10 @@ const Toolbar = () => {
             <CommandSeparator />
             <CommandGroup heading="Members">
               {members?.map((member) => (
-                <CommandItem onSelect={() => onMemberClick(member._id)}>
+                <CommandItem
+                  key={member._id}
+                  onSelect={() => onMemberClick(member._id)}
+                >
                   {member.user.name}
                 </CommandItem>
               ))}
@@ -76,5 +91,3 @@ const Toolbar = () => {
     </nav>
   );
 };
-
-export default Toolbar;
