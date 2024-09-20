@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Info, Search } from "lucide-react";
@@ -91,3 +90,5 @@ export const Toolbar = () => {
     </nav>
   );
 };
+
+export default Toolbar;
